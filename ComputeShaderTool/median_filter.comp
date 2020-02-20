@@ -1,0 +1,48 @@
+#version 450
+
+layout(local_size_x = 16, local_size_y = 16) in; // workgroup size defined with specialization constants. On cpp side there is associated SpecializationInfo entry in PipelineShaderStageCreateInfo
+layout(push_constant) uniform Parameters {           // specify push constants. on cpp side its layout is fixed at PipelineLayout, and values are provided via vk::CommandBuffer::pushConstants()
+   int Width;
+   int Height;
+   //float a;
+	int filter_radius;
+} params;
+//绑定的描述符资源。
+layout(std430, binding = 0) buffer lay0 { int arr_y[]; };
+layout(std430, binding = 1) buffer lay1 { int arr_x[]; };
+
+//layout(std430, binding = 2) buffer lay2 {int filter_radius[];};
+
+void main(){
+   // drop threads outside the buffer dimensions.
+   if(params.Width <= gl_GlobalInvocationID.x || params.Height <= gl_GlobalInvocationID.y){
+      return;
+   }
+   const uint id = params.Width*gl_GlobalInvocationID.y + gl_GlobalInvocationID.x; // current offset
+   
+   int f_radius = params.filter_radius;
+   int image_width = int(params.Width);
+   int image_height = int(params.Height);
+   int image_x = int(gl_GlobalInvocationID.x),image_y = int(gl_GlobalInvocationID.y);
+
+   int top_y = image_y-f_radius>=0?image_y-f_radius:0;
+   int bottom_y = image_y+f_radius<image_height?image_y+f_radius:image_height - 1;
+
+   int left_x = image_x-f_radius>=0?image_x-f_radius:0;
+   int right_x = image_x+f_radius<image_width?image_x+f_radius:image_width-1;
+
+   int filter_num = (bottom_y-top_y+1)*(right_x-left_x+1);
+   int sum_filter = 0;
+   for(int filter_y = top_y;filter_y<=bottom_y;filter_y++){
+     for(int filter_x = left_x;filter_x<=right_x;filter_x++){
+	   sum_filter += arr_x[filter_y*image_width+filter_x];
+	 }
+   }
+
+   arr_y[id] = (sum_filter/filter_num);
+   //uint z_num = gl_WorkGroupSize.x;
+   //arr_y[id] = (int(z_num));
+   //arr_y[id] =  ;
+
+   //arr_y[id] += params.a*arr_x[id]; // saxpy#
+}

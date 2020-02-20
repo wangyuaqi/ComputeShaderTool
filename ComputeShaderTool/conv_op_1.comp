@@ -1,0 +1,91 @@
+#version 450 core
+#define LOCAL_SZ_X 256
+//layout(std430) buffer;
+
+layout(binding = 0) uniform highp sampler3D image_data;
+layout(binding = 1) uniform highp sampler3D bias_data;
+layout(binding = 2) uniform highp sampler3D weight_data;
+layout(binding = 3) writeonly restrict highp uniform image3D convolved_image_data;
+layout(push_constant) uniform pushBlock {
+    int in_h;
+    int in_w;
+    int out_h;
+    int out_w;
+    int stride_h;
+    int stride_w;
+    int pad_h;
+    int pad_w;
+    int filter_h;
+    int filter_w;
+    int dilation_h;
+    int dilation_w;
+    int channels;
+    int batch;
+    int has_bias;
+    int M;
+    int K;
+    int N;
+    int basic_shader_batch_idx;
+    int basic_shader_partition_idx;
+    int basic_shader_partition_size;
+} p;
+
+layout(local_size_x = LOCAL_SZ_X, local_size_y = 1, local_size_z = 1) in;
+void main(){
+	int gx = int(gl_GlobalInvocationID.x);
+    int gy = int(gl_GlobalInvocationID.y) + p.basic_shader_partition_idx * p.basic_shader_partition_size;
+    int gz = p.basic_shader_batch_idx;
+    if(gx < p.M && gy < p.N)
+	{
+		vec4 sum = vec4(0);
+        int output_y = gx / p.out_w;
+        int output_x = gx % p.out_w;
+        int org_y = output_y * p.stride_h - p.pad_h;
+        int org_x = output_x * p.stride_w - p.pad_w;
+
+		int input_y = org_y;
+		int input_x = org_x;
+        int weight_off = gy * p.K;
+        //int input_off = gz * p.in_h * p.in_w * p.channels + (org_y * p.in_w + org_x);
+
+		for(int c = 0; c < p.channels; c++)
+        {
+            for(int y = 0; y < p.filter_h; y++)
+            {
+                for(int x = 0; x < p.filter_w; x++)
+                {
+                    if((org_y + y * p.dilation_h >= 0) && (org_y + y * p.dilation_h < p.in_h) && (org_x + x * p.dilation_w >= 0) && (org_x + x * p.dilation_w < p.in_w))
+                    {
+                        //sum += image_data[input_off + x * p.dilation_w] * weight_data[weight_off + x];
+						//sum += texelFetch(image_data,ivec3(c,y+input_y,x+input_x))*texelFectch(weight_data,ivec3(0,));
+						//vec4 input_value = texelFetch(image_data,ivec3(c,y+input_y,x+input_x),0);
+						vec4 input_value = texelFetch(image_data,ivec3(x+input_x,y+input_y,c),0);
+						vec4 k0 = texelFetch(weight_data,ivec3(x,y,gy),0);
+						/*vec4 k1 = texelFetch(weight_data,ivec3(1,y,x),0);
+						vec4 k2 = texelFetch(weight_data,ivec3(2,y,x),0);
+						vec4 k3 = texelFetch(weight_data,ivec3(3,y,x),0);*/
+						//sum =input_value  ;
+						//sum += vec4(4.0,4.0,4.0,4.0);
+						sum += k0*input_value;
+						/*sum += k1*input_value.y;
+						sum += k2*input_value.z;
+						sum += k3*input_value.w;*/
+                    }
+                }
+                //input_off += p.in_w * p.dilation_h;
+                //weight_off += p.filter_w;
+            }
+			//input_off += p.in_h * p.in_w - p.in_w * p.filter_h * p.dilation_h;
+		}
+		//int offset = gz * p.M * p.N + gx  + gy * p.M;
+        
+		ivec3 pos = ivec3(output_x,output_y,0);
+		imageStore(convolved_image_data,pos,sum);
+		//imageStore(convolved_image_data,ivec3(2,0,0),vec4(gx,3.0,3.0,3.0));
+	}
+	/*imageStore(convolved_image_data,ivec3(1,0,0),vec4(gy,3.0,3.0,3.0));
+	imageStore(convolved_image_data,ivec3(2,0,0),vec4(gx,3.0,3.0,3.0));
+	imageStore(convolved_image_data,ivec3(0,3,0),vec4(p.M,3.0,3.0,3.0));
+	imageStore(convolved_image_data,ivec3(0,4,0),vec4(p.N,3.0,3.0,3.0));*/
+	//imageStore(convolved_image_data,ivec3(0,gy,gx),5.0));
+}

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\vulkan_util">
+      <UniqueIdentifier>{3b0a5b08-d681-4773-a079-9c2a01cde48d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\vulkan_util">
+      <UniqueIdentifier>{da7f9503-686b-416b-bc38-f70bf8399a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ImageProcess">
+      <UniqueIdentifier>{e7930165-f8da-49ae-b607-ecac3dd93b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ImageProcess">
+      <UniqueIdentifier>{f7caca12-6ed3-43b4-b82a-2b3ed33d4438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{9b9a4e3b-caf2-4eae-9d5c-679954c87fbb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="env.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="log_util.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_buffer.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_device.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_instance.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_valid_layer.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_tool.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_shader.h">
+      <Filter>头文件\vulkan_util</Filter>
+    </ClInclude>
+    <ClInclude Include="median_filter.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="conv_cnn.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="op_base.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="tensor.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="vk_com.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="data_context.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="image_process.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vulkan_memory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="conv_cnn_image.h">
+      <Filter>头文件\ImageProcess</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="vulkan_buffer.cpp">
+      <Filter>源文件\vulkan_util</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_device.cpp">
+      <Filter>源文件\vulkan_util</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_instance.cpp">
+      <Filter>源文件\vulkan_util</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_valid_layer.cpp">
+      <Filter>源文件\vulkan_util</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_shader.cpp">
+      <Filter>源文件\vulkan_util</Filter>
+    </ClCompile>
+    <ClCompile Include="median_filter.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="test_main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="conv_cnn.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="op_base.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="tensor.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="data_context.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="image_process.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vulkan_memory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="conv_cnn_image.cpp">
+      <Filter>源文件\ImageProcess</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="median_filter.comp">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="conv_op.comp">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="conv_op_1.comp">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
